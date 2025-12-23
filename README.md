@@ -10,7 +10,6 @@ This document provides a complete, step-by-step guide for installing NVIDIA Open
 The guide covers system requirements, kernel and driver compatibility, module compilation and installation, userspace driver setup, Nouveau blacklisting, and post-installation validation. It emphasizes hybrid graphics usage through PRIME Render Offload, showing how to run applications on the NVIDIA GPU only when needed to preserve battery life. It also explains BIOS GPU modes, their trade-offs, and how they interact with the installed driver.
 
 Troubleshooting sections address common issues such as driver loading failures, Secure Boot, and version mismatches, along with clear uninstallation steps and maintenance notes for kernel updates. The document concludes with a practical command reference and external resources, making it a hands-on reference for enabling NVIDIA GPUs on Debian systems where official packages lag behind new hardware support.
----
 
 ## System Information
 - **OS:** Debian 13 (Trixie)
