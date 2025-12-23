@@ -11,6 +11,66 @@ The guide covers system requirements, kernel and driver compatibility, module co
 
 Troubleshooting sections address common issues such as driver loading failures, Secure Boot, and version mismatches, along with clear uninstallation steps and maintenance notes for kernel updates. The document concludes with a practical command reference and external resources, making it a hands-on reference for enabling NVIDIA GPUs on Debian systems where official packages lag behind new hardware support.
 
+---
+
+## Table of Contents
+
+- [System Information](#system-information)
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+  - [1. System Requirements](#1-system-requirements)
+  - [2. Download Required Files](#2-download-required-files)
+- [Installation Steps](#installation-steps)
+  - [Step 1: Install Prerequisites](#step-1-install-prerequisites)
+  - [Step 2: Remove Existing NVIDIA Drivers](#step-2-remove-existing-nvidia-drivers)
+  - [Step 3: Extract and Build Kernel Modules](#step-3-extract-and-build-kernel-modules)
+  - [Step 4: Install Kernel Modules](#step-4-install-kernel-modules)
+  - [Step 5: Download Userspace Driver](#step-5-download-userspace-driver)
+  - [Step 6: Install Userspace Components](#step-6-install-userspace-components)
+  - [Step 7: Blacklist Nouveau Driver](#step-7-blacklist-nouveau-driver)
+  - [Step 8: Reboot](#step-8-reboot)
+- [Post-Installation Verification](#post-installation-verification)
+  - [1. Check Driver Version](#1-check-driver-version)
+  - [2. Check Loaded Kernel Modules](#2-check-loaded-kernel-modules)
+  - [3. Check GPU Detection](#3-check-gpu-detection)
+  - [4. Check System Logs (if issues)](#4-check-system-logs-if-issues)
+- [Hybrid Graphics Usage (PRIME Render Offload)](#hybrid-graphics-usage-prime-render-offload)
+  - [Default Behavior](#default-behavior)
+  - [Using NVIDIA GPU for Specific Applications](#using-nvidia-gpu-for-specific-applications)
+  - [Creating a Convenient Alias (Recommended)](#creating-a-convenient-alias-recommended)
+  - [Alternative: Creating a Helper Script](#alternative-creating-a-helper-script)
+  - [Verifying Which GPU is Being Used](#verifying-which-gpu-is-being-used)
+- [BIOS GPU Mode Settings](#bios-gpu-mode-settings)
+  - [Option 1: Hybrid/Switchable Graphics (Current Setup)](#option-1-hybridswitchable-graphics-current-setup)
+  - [Option 2: Dedicated/Discrete Only](#option-2-dedicateddiscrete-only)
+  - [Option 3: Integrated Only](#option-3-integrated-only)
+  - [Switching Between Modes](#switching-between-modes)
+  - [Recommended Mode](#recommended-mode)
+- [Troubleshooting](#troubleshooting)
+  - [Driver Not Loading](#driver-not-loading)
+  - [nvidia-smi Not Working](#nvidia-smi-not-working)
+  - [Secure Boot Issues](#secure-boot-issues)
+  - [Version Mismatch Errors](#version-mismatch-errors)
+  - [Performance Issues](#performance-issues)
+- [Uninstallation](#uninstallation)
+  - [1. Remove Userspace Components](#1-remove-userspace-components)
+  - [2. Remove Kernel Modules](#2-remove-kernel-modules)
+  - [3. Remove Nouveau Blacklist](#3-remove-nouveau-blacklist)
+  - [4. Reboot](#4-reboot)
+- [Important Notes](#important-notes)
+  - [Driver Version Compatibility](#driver-version-compatibility)
+  - [Secure Boot](#secure-boot)
+  - [Updates](#updates)
+  - [Battery Life](#battery-life)
+- [Useful Commands Reference](#useful-commands-reference)
+  - [Driver Information](#driver-information)
+  - [Module Management](#module-management)
+  - [System Information](#system-information-1)
+  - [Logs and Debugging](#logs-and-debugging)
+- [Additional Resources](#additional-resources)
+
+---
+
 ## System Information
 - **OS:** Debian 13 (Trixie)
 - **Kernel:** 6.12.57+deb13-amd64
