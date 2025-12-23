@@ -1,9 +1,15 @@
-# NVIDIA Open Kernel Modules Installation Guide
+# NVIDIA Open Kernel Modules Installation Guide - Debian 13 Trixie
 **Complete Step-by-Step Documentation**
 
 ## Intro
 I created this guide with the help of Claude Code to install the NVIDIA drivers on my Lenovo Legion 5i. After many attempts to use the version provided by Debian, I found that the latest version does not support 50-series graphics cards.
 
+## AI Summary
+This document provides a complete, step-by-step guide for installing NVIDIA Open Kernel Modules on Debian 13 (Trixie) for modern RTX GPUs, with a focus on hybrid graphics laptops using Intel and NVIDIA GPUs together. It explains why the NVIDIA drivers shipped by Debian are not sufficient for RTX 50-series cards and documents a manual installation approach using NVIDIA’s open-source kernel modules combined with the proprietary userspace driver.
+
+The guide covers system requirements, kernel and driver compatibility, module compilation and installation, userspace driver setup, Nouveau blacklisting, and post-installation validation. It emphasizes hybrid graphics usage through PRIME Render Offload, showing how to run applications on the NVIDIA GPU only when needed to preserve battery life. It also explains BIOS GPU modes, their trade-offs, and how they interact with the installed driver.
+
+Troubleshooting sections address common issues such as driver loading failures, Secure Boot, and version mismatches, along with clear uninstallation steps and maintenance notes for kernel updates. The document concludes with a practical command reference and external resources, making it a hands-on reference for enabling NVIDIA GPUs on Debian systems where official packages lag behind new hardware support.
 ---
 
 ## System Information
