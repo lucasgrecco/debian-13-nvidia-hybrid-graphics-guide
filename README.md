@@ -52,6 +52,7 @@ Troubleshooting sections address common issues such as driver loading failures, 
   - [Secure Boot Issues](#secure-boot-issues)
   - [Version Mismatch Errors](#version-mismatch-errors)
   - [Performance Issues](#performance-issues)
+  - [Hybrid Mode Not Working (NVIDIA Always Active)](#hybrid-mode-not-working-nvidia-always-active)
 - [Uninstallation](#uninstallation)
   - [1. Remove Userspace Components](#1-remove-userspace-components)
   - [2. Remove Kernel Modules](#2-remove-kernel-modules)
@@ -557,6 +558,76 @@ sudo nvidia-xconfig
 ```
 
 This will use NVIDIA exclusively but reduce battery life.
+
+### Hybrid Mode Not Working (NVIDIA Always Active)
+
+**Problem:** After switching BIOS GPU modes (e.g., from Dedicated to Hybrid), the system still uses NVIDIA GPU by default instead of Intel.
+
+**Cause:** An X11 configuration file may be forcing NVIDIA as the primary GPU.
+
+**Check which GPU is being used:**
+```bash
+# Install mesa-utils if not already installed
+sudo apt install mesa-utils
+
+# Check current renderer
+glxinfo | grep "OpenGL renderer"
+```
+
+If it shows NVIDIA instead of Intel, fix it with one of these methods:
+
+#### Quick Manual Fix
+
+Disable the NVIDIA X11 configuration:
+```bash
+sudo mv /usr/share/X11/xorg.conf.d/nvidia-drm-outputclass.conf \
+       /usr/share/X11/xorg.conf.d/nvidia-drm-outputclass.conf.disabled
+sudo systemctl restart display-manager
+```
+
+**Warning:** This will restart your display manager and log you out!
+
+After logging back in, verify Intel is being used:
+```bash
+glxinfo | grep "OpenGL renderer"
+# Should show: Mesa Intel or similar
+```
+
+To revert (make NVIDIA primary again):
+```bash
+sudo mv /usr/share/X11/xorg.conf.d/nvidia-drm-outputclass.conf.disabled \
+       /usr/share/X11/xorg.conf.d/nvidia-drm-outputclass.conf
+sudo systemctl restart display-manager
+```
+
+#### Automated Solution: Helper Scripts
+
+This repository includes two helper scripts for easy GPU mode switching:
+- `nvidia-mode-intel.sh` - Switch to Intel as primary (NVIDIA on-demand)
+- `nvidia-mode-dedicated.sh` - Switch to NVIDIA as primary (always active)
+
+**Install the scripts:**
+```bash
+sudo cp nvidia-mode-intel.sh /usr/local/bin/nvidia-mode-intel
+sudo cp nvidia-mode-dedicated.sh /usr/local/bin/nvidia-mode-dedicated
+sudo chmod +x /usr/local/bin/nvidia-mode-intel
+sudo chmod +x /usr/local/bin/nvidia-mode-dedicated
+```
+
+**Usage:**
+```bash
+# Switch to Intel primary (NVIDIA on-demand only)
+nvidia-mode-intel
+
+# Switch to NVIDIA always active
+nvidia-mode-dedicated
+```
+
+**Note:** After switching modes, use the `nvidia` command to run specific applications on NVIDIA:
+```bash
+nvidia glxgears
+nvidia steam
+```
 
 ---
 
